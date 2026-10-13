@@ -1,0 +1,52 @@
+# Backendni (../../../english-education) lokal ishga tushirish.
+# Ishlatish: dev/backend/README.md
+name: ee-backend
+
+x-backend: &backend
+  build:
+    context: ../../../english-education
+    dockerfile: ../english-education-frontend/dev/backend/Dockerfile
+  image: ee-backend-dev
+  working_dir: /app
+  volumes:
+    - ../../../english-education:/app
+  env_file: backend.env
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_started
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: english_education
+      POSTGRES_USER: ee
+      POSTGRES_PASSWORD: ee
+    ports:
+      # Kompyuterdagi PostgreSQL 5432 da ishlayapti, to'qnashmasligi uchun 5433
+      - '5433:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ee -d english_education']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis:
+    image: redis:7-alpine
+
+  web:
+    <<: *backend
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - '8000:8000'
+
+  worker:
+    <<: *backend
+    command: celery -A core worker -l info --pool=solo
+
+volumes:
+  pgdata:

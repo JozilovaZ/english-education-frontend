@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>English Education</title>
+    <script>
+      // React yuklanguncha oq "chaqnash" bo'lmasligi uchun: tanlangan rejimga qarab fon
+      // (ranglar src/app/palette.ts dagi dagi bg bilan bir xil)
+      ;(function () {
+        var pref = 'dark'
+        try {
+          pref = JSON.parse(localStorage.getItem('ee-theme') || '{}').state.preference || 'dark'
+        } catch (e) {}
+        var dark = pref === 'dark' || (pref === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+        document.documentElement.style.background = dark ? '#0B1126' : '#F4F5FB'
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

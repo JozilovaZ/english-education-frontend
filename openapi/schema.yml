@@ -1,0 +1,6201 @@
+openapi: 3.0.3
+info:
+  title: English Education API
+  version: 1.0.0
+  description: English Education platform API documentation with JWT authentication
+paths:
+  /Attendance/:
+    get:
+      operationId: Attendance_list
+      description: Davomat ro'yxati (O'qituvchi o'z guruhi davomatini, talaba esa
+        faqat o'z davomatini ko'radi).
+      tags:
+      - Attendance
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attendance'
+          description: ''
+    post:
+      operationId: Attendance_create
+      description: Dars uchun o'quvchi davomatini belgilash (Faqat o'qituvchi o'z
+        guruhi uchun qila oladi). Darsga kelmagan yoki kechikkan bo'lsa ota-onasiga
+        avtomatik Telegram xabarnoma yuboriladi.
+      tags:
+      - Attendance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+  /Attendance/{id}/:
+    get:
+      operationId: Attendance_retrieve
+      description: Bitta davomat qaydi tafsilotlari.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attendance.
+        required: true
+      tags:
+      - Attendance
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+    patch:
+      operationId: Attendance_partial_update
+      description: Davomat holatini qisman yangilash.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attendance.
+        required: true
+      tags:
+      - Attendance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAttendance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAttendance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAttendance'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+    delete:
+      operationId: Attendance_destroy
+      description: Davomat qaydini o'chirish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attendance.
+        required: true
+      tags:
+      - Attendance
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Attendance/bulk-mark/:
+    post:
+      operationId: Attendance_bulk_mark_create
+      description: O'qituvchi butun guruh o'quvchilarining davomatini bitta so'rovda
+        belgilashi mumkin. Kelmagan yoki kechikkanlarning ota-onalariga Telegram xabarnoma
+        yuboriladi.
+      summary: Butun guruh uchun bitta darsda ommaviy davomat qilish
+      tags:
+      - Attendance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkAttendance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BulkAttendance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BulkAttendance'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attendance'
+          description: ''
+  /Attendance/my-attendance/:
+    get:
+      operationId: Attendance_my_attendance_retrieve
+      description: Talaba faqat o'zining barcha darslardagi davomatini va qatnashish
+        statistikasini ko'radi.
+      summary: Talabaning o'z davomati va statistikasi
+      tags:
+      - Attendance
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+  /Educations/courses/:
+    get:
+      operationId: Educations_courses_list
+      description: Barcha kurslar ro'yxatini olish (qidirish va saralash imkoniyati
+        bilan).
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Courses
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+          description: ''
+    post:
+      operationId: Educations_courses_create
+      description: Yangi kurs yaratish.
+      tags:
+      - Courses
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Course'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Course'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+  /Educations/courses/{id}/:
+    get:
+      operationId: Educations_courses_retrieve
+      description: Bitta kurs haqida batafsil ma'lumot olish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this course.
+        required: true
+      tags:
+      - Courses
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    patch:
+      operationId: Educations_courses_partial_update
+      description: Kurs ma'lumotlarini qisman yangilash (PATCH).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this course.
+        required: true
+      tags:
+      - Courses
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCourse'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCourse'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCourse'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    delete:
+      operationId: Educations_courses_destroy
+      description: Kursni o'chirish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this course.
+        required: true
+      tags:
+      - Courses
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Educations/groups/:
+    get:
+      operationId: Educations_groups_list
+      description: |-
+        Barcha guruhlar ro'yxatini ko'rish va filtrlash (faqat Admin va SuperAdmin uchun).
+        Filtrlar orqali status (tamomlangan, pauza qilingan, faol va h.k.), kurs, o'qituvchi, talabalar soni yoki bo'sh o'rinlar bo'yicha saralash va filtrlash mumkin.
+      parameters:
+      - in: query
+        name: course
+        schema:
+          type: integer
+        description: 'Kurs ID bo''yicha filtrlash: ?course=1'
+      - in: query
+        name: has_available_seats
+        schema:
+          type: boolean
+        description: 'Bo''sh o''rinlari bor guruhlarni filtrlash (true yoki false):
+          ?has_available_seats=true'
+      - in: query
+        name: is_full
+        schema:
+          type: boolean
+        description: 'To''liq to''lgan guruhlarni filtrlash (true yoki false): ?is_full=true'
+      - in: query
+        name: max_students
+        schema:
+          type: integer
+        description: 'Guruhdagi maksimal talabalar soni: ?max_students=15'
+      - in: query
+        name: min_students
+        schema:
+          type: integer
+        description: 'Guruhdagi minimal talabalar soni: ?min_students=5'
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: start_date_from
+        schema:
+          type: string
+          format: date
+        description: 'Guruh boshlanish sanasi (dan, YYYY-MM-DD): ?start_date_from=2026-01-01'
+      - in: query
+        name: start_date_to
+        schema:
+          type: string
+          format: date
+        description: 'Guruh boshlanish sanasi (gacha, YYYY-MM-DD): ?start_date_to=2026-12-31'
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: 'Guruh holati bo''yicha filtrlash (recruiting, active, completed,
+          cancelled, paused). Vergul bilan bir nechta yozish ham mumkin: ?status=completed,paused'
+      - in: query
+        name: teacher
+        schema:
+          type: integer
+        description: 'O''qituvchi ID bo''yicha filtrlash: ?teacher=5'
+      tags:
+      - Groups
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+          description: ''
+    post:
+      operationId: Educations_groups_create
+      description: Yangi guruh yaratish (faqat Admin va SuperAdmin uchun).
+      tags:
+      - Groups
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+  /Educations/groups/{id}/:
+    get:
+      operationId: Educations_groups_retrieve
+      description: Bitta guruh haqida batafsil ma'lumot ko'rish (faqat Admin va SuperAdmin
+        uchun).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - Groups
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+    patch:
+      operationId: Educations_groups_partial_update
+      description: Guruh ma'lumotlarini qisman yangilash (PATCH, faqat Admin va SuperAdmin
+        uchun. Cancelled va Completed guruhlarni o'zgartirib bo'lmaydi).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+  /Educations/groups/{id}/add-student/:
+    post:
+      operationId: Educations_groups_add_student_create
+      description: Guruhga yangi talaba qo'shish (sig'im va talaba holati tekshiriladi).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AddStudentToGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AddStudentToGroup'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddStudentToGroup'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /Educations/groups/{id}/remove-student/:
+    post:
+      operationId: Educations_groups_remove_student_create
+      description: Guruhdan talabani chiqarish (left_at sanasi saqlanadi).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RemoveStudentFromGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RemoveStudentFromGroup'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveStudentFromGroup'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /Educations/groups/{id}/students/:
+    get:
+      operationId: Educations_groups_students_list
+      description: Guruhdagi talabalar ro'yxatini ko'rish (faqat Admin va SuperAdmin
+        uchun).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Groups
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupStudent'
+          description: ''
+  /Educations/groups/statistics/:
+    get:
+      operationId: Educations_groups_statistics_retrieve
+      description: |-
+        Guruhlar va o'quvchilar bo'yicha batafsil statistika (faqat Admin va SuperAdmin uchun).
+        Statistika quyidagilarni o'z ichiga oladi:
+        - Umumiy guruhlar soni
+        - Statuslar bo'yicha taqsimot (tugallangan, pauza qilingan, faol, o'quvchilar yig'ilayotgan, bekor qilingan) soni va foizlari
+        - O'quvchilar soniga nisbatan statistika (jami o'quvchilar, jami sig'im, bo'sh o'rinlar, to'lganlik darajasi, o'rtacha talabalar soni, to'lgan/bo'sh guruhlar soni)
+        - Talabalar soni oraliqlari bo'yicha guruhlar taqsimoti (0 ta, 1-5, 6-10, 11-15, >15)
+        - Kurslar bo'yicha guruhlar va talabalar taqsimoti
+        - O'qituvchilar bo'yicha guruhlar va talabalar taqsimoti
+
+        Statistikani ixtiyoriy ravishda kurs, o'qituvchi yoki sana oralig'i bo'yicha filtrlash mumkin.
+      parameters:
+      - in: query
+        name: course
+        schema:
+          type: integer
+        description: Statistikani ma'lum bir kurs bo'yicha filtrlash (kurs ID)
+      - in: query
+        name: start_date_from
+        schema:
+          type: string
+          format: date
+        description: Statistikani boshlanish sanasi bo'yicha filtrlash (dan, YYYY-MM-DD)
+      - in: query
+        name: start_date_to
+        schema:
+          type: string
+          format: date
+        description: Statistikani boshlanish sanasi bo'yicha filtrlash (gacha, YYYY-MM-DD)
+      - in: query
+        name: teacher
+        schema:
+          type: integer
+        description: Statistikani ma'lum bir o'qituvchi bo'yicha filtrlash (o'qituvchi
+          ID)
+      tags:
+      - Groups
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupStatistics'
+          description: ''
+  /Educations/lessons/:
+    get:
+      operationId: Educations_lessons_list
+      description: O'qituvchining faqat o'z guruhlariga tegishli darslar ro'yxatini
+        olish (qidirish va saralash imkoniyati bilan).
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Lessons
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lesson'
+          description: ''
+    post:
+      operationId: Educations_lessons_create
+      description: Yangi dars yaratish (faqat o'qituvchi o'zi dars beradigan guruhlar
+        uchun ruxsat etiladi).
+      tags:
+      - Lessons
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Lesson'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Lesson'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lesson'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+          description: ''
+  /Educations/lessons/{id}/:
+    get:
+      operationId: Educations_lessons_retrieve
+      description: Bitta dars haqida batafsil ma'lumot olish (faqat o'qituvchining
+        o'z darslari uchun).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson.
+        required: true
+      tags:
+      - Lessons
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+          description: ''
+    put:
+      operationId: Educations_lessons_update
+      description: Darsni to'liq yangilash (PUT, faqat o'qituvchining o'z darslari
+        uchun).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson.
+        required: true
+      tags:
+      - Lessons
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Lesson'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Lesson'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lesson'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+          description: ''
+    patch:
+      operationId: Educations_lessons_partial_update
+      description: Darsni qisman yangilash (PATCH, faqat o'qituvchining o'z darslari
+        uchun).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson.
+        required: true
+      tags:
+      - Lessons
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLesson'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLesson'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLesson'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+          description: ''
+    delete:
+      operationId: Educations_lessons_destroy
+      description: Darsni o'chirish (faqat o'qituvchining o'z darslari uchun).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson.
+        required: true
+      tags:
+      - Lessons
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Educations/schedules/:
+    get:
+      operationId: Educations_schedules_list
+      description: Barcha dars jadvallari ro'yxatini olish (qidirish va saralash imkoniyati
+        bilan).
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Schedules
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
+          description: ''
+    post:
+      operationId: Educations_schedules_create
+      description: Guruh uchun yangi dars jadvalini yaratish.
+      tags:
+      - Schedules
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Schedule'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+          description: ''
+  /Educations/schedules/{id}/:
+    get:
+      operationId: Educations_schedules_retrieve
+      description: Bitta dars jadvali haqida batafsil ma'lumot olish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this schedule.
+        required: true
+      tags:
+      - Schedules
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+          description: ''
+    patch:
+      operationId: Educations_schedules_partial_update
+      description: Dars jadvalini qisman yangilash (PATCH).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this schedule.
+        required: true
+      tags:
+      - Schedules
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSchedule'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSchedule'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSchedule'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+          description: ''
+    delete:
+      operationId: Educations_schedules_destroy
+      description: Dars jadvalini o'chirish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this schedule.
+        required: true
+      tags:
+      - Schedules
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Educations/teacher/groups/:
+    get:
+      operationId: Educations_teacher_groups_list
+      description: O'qituvchi o'ziga biriktirilgan barcha guruhlar ro'yxatini ko'rishi
+        uchun ixcham (kamaytirilgan) ma'lumotlar qaytaruvchi URL.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Teacher Groups
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeacherGroupList'
+          description: ''
+  /Educations/teacher/groups/{id}/:
+    get:
+      operationId: Educations_teacher_groups_retrieve
+      description: O'qituvchi o'ziga biriktirilgan bitta guruh ma'lumotlarini (jadval,
+        kurs detallari va h.k.) batafsil ko'rishi uchun URL. (O'quvchilar ro'yxati
+        alohida /students/ endpointi orqali olinadi).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - Teacher Groups
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeacherGroupDetail'
+          description: ''
+  /Educations/teacher/groups/{id}/students/:
+    get:
+      operationId: Educations_teacher_groups_students_list
+      description: O'qituvchi o'zining guruhi talabalari ro'yxatini ko'rishi uchun
+        endpoint.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Teacher Groups
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupStudent'
+          description: ''
+  /Exams/:
+    get:
+      operationId: Exams_list
+      description: Imtihonlar ro'yxati. O'qituvchi faqat o'z guruhlarining imtihonlarini,
+        talaba faqat o'zi a'zo bo'lgan guruh imtihonlarini ko'radi.
+      tags:
+      - Exams
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExamModels'
+          description: ''
+    post:
+      operationId: Exams_create
+      description: Yangi imtihon yaratish. Faqat o'z guruhiga tegishli o'qituvchiga
+        ruxsat etiladi.
+      tags:
+      - Exams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamModels'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExamModels'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExamModels'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamModels'
+          description: ''
+  /Exams/{id}/:
+    get:
+      operationId: Exams_retrieve
+      description: Bitta imtihon ma'lumotlari.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon.
+        required: true
+      tags:
+      - Exams
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamModels'
+          description: ''
+    patch:
+      operationId: Exams_partial_update
+      description: Imtihonni qisman yangilash. Faqat ushbu guruh o'qituvchisiga ruxsat
+        beriladi.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon.
+        required: true
+      tags:
+      - Exams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExamModels'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedExamModels'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExamModels'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamModels'
+          description: ''
+    delete:
+      operationId: Exams_destroy
+      description: Imtihonni o'chirish. Faqat ushbu guruh o'qituvchisiga ruxsat beriladi.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon.
+        required: true
+      tags:
+      - Exams
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Exams/{id}/attempts/:
+    get:
+      operationId: Exams_attempts_list_2
+      description: Faqat o'z guruhining o'qituvchisi talabalarning barcha topshirgan
+        imtihon natijalarini ko'rishi mumkin.
+      summary: Aynan shu guruh o'qituvchisi uchun barcha talabalar natijalari
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon.
+        required: true
+      tags:
+      - Exams
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExamAttemptDetail'
+          description: ''
+  /Exams/{id}/my-attempt/:
+    get:
+      operationId: Exams_my_attempt_retrieve
+      description: Talaba o'zining topshirgan imtihoni, to'plangan balli va o'tgan/o'tmaganligini
+        ko'rishi mumkin.
+      summary: Talabaning ushbu imtihon bo'yicha o'z urinishi va natijalari
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon.
+        required: true
+      tags:
+      - Exams
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAttemptDetail'
+          description: ''
+  /Exams/{id}/start/:
+    post:
+      operationId: Exams_start_create
+      description: Talaba imtihonni boshlaydi. Deadlinedan oshib ketsa, boshlash imkoni
+        bo'lmaydi. Boshlangan vaqt qayd etiladi va savollar taqdim etiladi.
+      summary: Talaba tomonidan imtihonni boshlash
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon.
+        required: true
+      tags:
+      - Exams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamModels'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExamModels'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExamModels'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAttemptDetail'
+          description: ''
+  /Exams/{id}/submit/:
+    post:
+      operationId: Exams_submit_create
+      description: Talaba savollarga bergan javoblarini yoki faylini yuklaydi. Duration
+        yoki deadline tugagan bo'lsa yuklay olmaydi. Yakunlanganda passing_score bo'yicha
+        hisoblanadi va ota-onaga darhol xabar yuboriladi.
+      summary: Talaba tomonidan imtihonni topshirish / yuklash
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon.
+        required: true
+      tags:
+      - Exams
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExamAttemptSubmit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExamAttemptSubmit'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamAttemptSubmit'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAttemptDetail'
+          description: ''
+  /Exams/answers/:
+    get:
+      operationId: Exams_answers_list
+      description: Savol variantlari ro'yxati.
+      tags:
+      - Exam Question Answers
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExamAnswerQuestion'
+          description: ''
+    post:
+      operationId: Exams_answers_create
+      description: Savolga yangi variant qo'shish.
+      tags:
+      - Exam Question Answers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamAnswerQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExamAnswerQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExamAnswerQuestion'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAnswerQuestion'
+          description: ''
+  /Exams/answers/{id}/:
+    get:
+      operationId: Exams_answers_retrieve
+      description: Bitta variant ma'lumoti.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Savol javob varianti.
+        required: true
+      tags:
+      - Exam Question Answers
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAnswerQuestion'
+          description: ''
+    patch:
+      operationId: Exams_answers_partial_update
+      description: Variantni tahrirlash.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Savol javob varianti.
+        required: true
+      tags:
+      - Exam Question Answers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExamAnswerQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedExamAnswerQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExamAnswerQuestion'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAnswerQuestion'
+          description: ''
+    delete:
+      operationId: Exams_answers_destroy
+      description: Variantni o'chirish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Savol javob varianti.
+        required: true
+      tags:
+      - Exam Question Answers
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Exams/attempts/:
+    get:
+      operationId: Exams_attempts_list
+      description: Topshirilgan imtihonlar ro'yxati (o'qituvchi o'z guruhinikini,
+        talaba faqat o'zinikini ko'radi).
+      tags:
+      - Exam Attempts
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExamAttemptDetail'
+          description: ''
+  /Exams/attempts/{id}/:
+    get:
+      operationId: Exams_attempts_retrieve
+      description: Bitta topshirilgan imtihon tafsilotlari.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon topshirig'i (Urinish).
+        required: true
+      tags:
+      - Exam Attempts
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAttemptDetail'
+          description: ''
+  /Exams/attempts/{id}/grade/:
+    post:
+      operationId: Exams_attempts_grade_create
+      description: O'qituvchi talabaga ball (score) va izoh (teacher_comment) qo'yadi.
+        Passing_score bilan hisoblanib, darhol ota-onaga Telegram bot orqali yuboriladi.
+      summary: Aynan shu guruh o'qituvchisi tomonidan imtihonni baholash
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon topshirig'i (Urinish).
+        required: true
+      tags:
+      - Exam Attempts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeacherGradeAttempt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TeacherGradeAttempt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TeacherGradeAttempt'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAttemptDetail'
+          description: ''
+    patch:
+      operationId: Exams_attempts_grade_partial_update
+      description: O'qituvchi talabaga ball (score) va izoh (teacher_comment) qo'yadi.
+        Passing_score bilan hisoblanib, darhol ota-onaga Telegram bot orqali yuboriladi.
+      summary: Aynan shu guruh o'qituvchisi tomonidan imtihonni baholash
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon topshirig'i (Urinish).
+        required: true
+      tags:
+      - Exam Attempts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTeacherGradeAttempt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTeacherGradeAttempt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTeacherGradeAttempt'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAttemptDetail'
+          description: ''
+  /Exams/questions/:
+    get:
+      operationId: Exams_questions_list
+      description: Imtihon savollari ro'yxati (faqat o'z guruhining o'qituvchisi uchun).
+      tags:
+      - Exam Questions
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExamQuestion'
+          description: ''
+    post:
+      operationId: Exams_questions_create
+      description: Imtihonga yangi savol qo'shish (faqat shu guruh o'qituvchisi).
+      tags:
+      - Exam Questions
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExamQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExamQuestion'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamQuestion'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamQuestion'
+          description: ''
+  /Exams/questions/{id}/:
+    get:
+      operationId: Exams_questions_retrieve
+      description: Bitta savol tafsilotlari.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon savoli.
+        required: true
+      tags:
+      - Exam Questions
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamQuestion'
+          description: ''
+    patch:
+      operationId: Exams_questions_partial_update
+      description: Savolni tahrirlash.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon savoli.
+        required: true
+      tags:
+      - Exam Questions
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExamQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedExamQuestion'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExamQuestion'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamQuestion'
+          description: ''
+    delete:
+      operationId: Exams_questions_destroy
+      description: Savolni o'chirish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Imtihon savoli.
+        required: true
+      tags:
+      - Exam Questions
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Homework/:
+    get:
+      operationId: Homework_list
+      description: Barcha uy vazifalari ro'yxati. Talaba uchun 'my_submission' maydonida
+        o'z bahosi va izohi ham ko'rinadi.
+      tags:
+      - Homeworks
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Homework'
+          description: ''
+    post:
+      operationId: Homework_create
+      description: Yangi uy vazifasi yaratish (O'qituvchi uchun).
+      tags:
+      - Homeworks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Homework'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Homework'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Homework'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Homework'
+          description: ''
+  /Homework/{id}/:
+    get:
+      operationId: Homework_retrieve
+      description: Bitta uy vazifasi haqida batafsil ma'lumot (talaba uchun o'z bahosi
+        va izohi bilan).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework.
+        required: true
+      tags:
+      - Homeworks
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Homework'
+          description: ''
+    patch:
+      operationId: Homework_partial_update
+      description: Uy vazifasini qisman yangilash.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework.
+        required: true
+      tags:
+      - Homeworks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedHomework'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedHomework'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedHomework'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Homework'
+          description: ''
+    delete:
+      operationId: Homework_destroy
+      description: Uy vazifasini o'chirish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework.
+        required: true
+      tags:
+      - Homeworks
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Homework/{id}/my-submission/:
+    get:
+      operationId: Homework_my_submission_retrieve
+      description: Talaba aynan shu uy vazifasiga topshirgan javobi, o'qituvchi qo'ygan
+        baho (score) va izoh (teacher_comment)ni ko'rishi mumkin.
+      summary: Talabaning aynan shu vazifa bo'yicha olgan bahosi va o'qituvchi izohi
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework.
+        required: true
+      tags:
+      - Homeworks
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkSubmissionDetail'
+          description: ''
+  /Homework/resources/:
+    get:
+      operationId: Homework_resources_list
+      description: Uy vazifasi resurslari ro'yxati.
+      tags:
+      - Homework Resources
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HomeworkResource'
+          description: ''
+    post:
+      operationId: Homework_resources_create
+      description: Yangi resurs yuklash (Fayl maksimal 5 MB, faqat PDF, DOC, DOCX
+        formatlar).
+      tags:
+      - Homework Resources
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/HomeworkResource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/HomeworkResource'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HomeworkResource'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkResource'
+          description: ''
+  /Homework/resources/{id}/:
+    get:
+      operationId: Homework_resources_retrieve
+      description: Bitta resurs haqida batafsil ma'lumot.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework resource.
+        required: true
+      tags:
+      - Homework Resources
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkResource'
+          description: ''
+    patch:
+      operationId: Homework_resources_partial_update
+      description: |-
+        HomeworkResource modeli uchun ViewSet.
+        Fayllar uchun maksimal hajm 5 MB va PDF, DOC, DOCX formatlar ruxsat etilgan.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework resource.
+        required: true
+      tags:
+      - Homework
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedHomeworkResource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedHomeworkResource'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedHomeworkResource'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkResource'
+          description: ''
+    delete:
+      operationId: Homework_resources_destroy
+      description: Resursni o'chirish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework resource.
+        required: true
+      tags:
+      - Homework Resources
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Homework/submissions/:
+    get:
+      operationId: Homework_submissions_list
+      description: Topshirilgan vazifalar ro'yxati (Talaba faqat o'zinikini o'qituvchi
+        qo'ygan bahosi va izohi bilan ko'radi, o'qituvchi esa o'z guruhinikini ko'radi).
+      tags:
+      - Homework Submissions
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HomeworkSubmissionDetail'
+          description: ''
+    post:
+      operationId: Homework_submissions_create
+      description: Talaba tomonidan alohida vazifani yuklash/topshirish. Bunda o'qituvchining
+        bahosi va izohi bo'lmaydi.
+      tags:
+      - Homework Submissions
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentHomeworkSubmission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentHomeworkSubmission'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentHomeworkSubmission'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentHomeworkSubmission'
+          description: ''
+  /Homework/submissions/{id}/:
+    get:
+      operationId: Homework_submissions_retrieve
+      description: Topshirilgan bitta vazifa tafsilotlari (baho va izoh bilan birga).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework submission.
+        required: true
+      tags:
+      - Homework Submissions
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkSubmissionDetail'
+          description: ''
+    patch:
+      operationId: Homework_submissions_partial_update
+      description: |-
+        HomeworkSubmission modeli uchun ViewSet.
+        - Talaba o'z vazifasini yuklaydi (bunda serializerda teacher bahosi va komenti bo'lmaydi).
+        - Topshirilgandan so'ng talaba GET orqali o'qituvchi qo'ygan baho (score) va izoh (teacher_comment)ni to'liq ko'ra oladi.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework submission.
+        required: true
+      tags:
+      - Homework
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentHomeworkSubmission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentHomeworkSubmission'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStudentHomeworkSubmission'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentHomeworkSubmission'
+          description: ''
+    delete:
+      operationId: Homework_submissions_destroy
+      description: |-
+        HomeworkSubmission modeli uchun ViewSet.
+        - Talaba o'z vazifasini yuklaydi (bunda serializerda teacher bahosi va komenti bo'lmaydi).
+        - Topshirilgandan so'ng talaba GET orqali o'qituvchi qo'ygan baho (score) va izoh (teacher_comment)ni to'liq ko'ra oladi.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this homework submission.
+        required: true
+      tags:
+      - Homework
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Homework/submissions/{id}/grade/:
+    post:
+      operationId: Homework_submissions_grade_create
+      description: Faqat dars tegishli bo'lgan guruh o'qituvchisi talaba vazifasini
+        baholashi va izoh qoldirishi mumkin. Baholanganda ota-onasiga Telegram bot
+        orqali bildirishnoma yuboriladi.
+      summary: Aynan shu guruhning o'qituvchisi tomonidan vazifani baholash (POST)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Homework Submissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeacherGradeSubmission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TeacherGradeSubmission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TeacherGradeSubmission'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkSubmissionDetail'
+          description: ''
+    patch:
+      operationId: Homework_submissions_grade_partial_update
+      description: Faqat dars tegishli bo'lgan guruh o'qituvchisi talaba vazifasini
+        baholashi va izoh qoldirishi mumkin. Baholanganda ota-onasiga Telegram bot
+        orqali bildirishnoma yuboriladi.
+      summary: Aynan shu guruhning o'qituvchisi tomonidan vazifani baholash (PATCH)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Homework Submissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTeacherGradeSubmission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTeacherGradeSubmission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTeacherGradeSubmission'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeworkSubmissionDetail'
+          description: ''
+  /Homework/submissions/my-submissions/:
+    get:
+      operationId: Homework_submissions_my_submissions_list
+      description: Talaba faqat o'zining barcha topshirgan vazifalarini, o'qituvchi
+        qo'ygan baholar va izohlar bilan birgalikda ko'radi.
+      summary: Talabaning barcha topshirgan vazifalari va baholari ro'yxati
+      tags:
+      - Homework Submissions
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HomeworkSubmissionDetail'
+          description: ''
+  /LessonMaterial/:
+    get:
+      operationId: LessonMaterial_list
+      description: Dars materiallari ro'yxati (Talaba faqat o'z guruhi materiallarini,
+        o'qituvchi o'z guruhinikini ko'radi).
+      tags:
+      - Lesson Materials
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LessonMaterial'
+          description: ''
+    post:
+      operationId: LessonMaterial_create
+      description: Yangi dars materiali yaratish (Faqat o'qituvchi o'z guruhi va o'tilgan
+        darslar uchun qo'sha oladi).
+      tags:
+      - Lesson Materials
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LessonMaterial'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LessonMaterial'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonMaterial'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonMaterial'
+          description: ''
+  /LessonMaterial/{id}/:
+    get:
+      operationId: LessonMaterial_retrieve
+      description: Bitta dars materiali tafsilotlari (resurslari bilan birga).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson material.
+        required: true
+      tags:
+      - Lesson Materials
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonMaterial'
+          description: ''
+    patch:
+      operationId: LessonMaterial_partial_update
+      description: Dars materialini qisman yangilash.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson material.
+        required: true
+      tags:
+      - Lesson Materials
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLessonMaterial'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLessonMaterial'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLessonMaterial'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonMaterial'
+          description: ''
+    delete:
+      operationId: LessonMaterial_destroy
+      description: Dars materialini o'chirish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson material.
+        required: true
+      tags:
+      - Lesson Materials
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /LessonMaterial/resources/:
+    get:
+      operationId: LessonMaterial_resources_list
+      description: Dars materiallari resurslari ro'yxati (fayllar va havolalar).
+      tags:
+      - Lesson Material Resources
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LessonMaterialResource'
+          description: ''
+    post:
+      operationId: LessonMaterial_resources_create
+      description: Materialga yangi fayl yoki havola yuklash (Faqat shu guruh o'qituvchisi
+        uchun).
+      tags:
+      - Lesson Material Resources
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LessonMaterialResource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LessonMaterialResource'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonMaterialResource'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonMaterialResource'
+          description: ''
+  /LessonMaterial/resources/{id}/:
+    get:
+      operationId: LessonMaterial_resources_retrieve
+      description: Bitta material resursi tafsilotlari.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson material resource.
+        required: true
+      tags:
+      - Lesson Material Resources
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonMaterialResource'
+          description: ''
+    patch:
+      operationId: LessonMaterial_resources_partial_update
+      description: Resursni yangilash.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson material resource.
+        required: true
+      tags:
+      - Lesson Material Resources
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLessonMaterialResource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLessonMaterialResource'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLessonMaterialResource'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonMaterialResource'
+          description: ''
+    delete:
+      operationId: LessonMaterial_resources_destroy
+      description: Resursni o'chirish.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lesson material resource.
+        required: true
+      tags:
+      - Lesson Material Resources
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /Parents/:
+    get:
+      operationId: Parents_list
+      tags:
+      - Parents
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ParentSerializers'
+          description: ''
+    post:
+      operationId: Parents_create
+      tags:
+      - Parents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParentSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ParentSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ParentSerializers'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentSerializers'
+          description: ''
+  /Parents/{id}/:
+    get:
+      operationId: Parents_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this parents.
+        required: true
+      tags:
+      - Parents
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentSerializers'
+          description: ''
+    patch:
+      operationId: Parents_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this parents.
+        required: true
+      tags:
+      - Parents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedParentSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedParentSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedParentSerializers'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentSerializers'
+          description: ''
+    delete:
+      operationId: Parents_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this parents.
+        required: true
+      tags:
+      - Parents
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /PublicTenants/clients/:
+    get:
+      operationId: PublicTenants_clients_list
+      description: Barcha markazlar ro'yxatini olish. 'status' orqali active, inactive,
+        trial, paid bo'yicha filter qilish mumkin.
+      summary: O'quv markazlari (Tenantlar) ro'yxati
+      parameters:
+      - in: query
+        name: exclude_public
+        schema:
+          type: boolean
+        description: 'Public schemani ro''yxatdan chiqarib tashlash (default: false)'
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Nomi yoki schema_name bo'yicha qidirish
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: 'Filter: active | inactive | trial | paid'
+      tags:
+      - 'Public Admin: Tenants'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientListRetrieve'
+          description: ''
+    post:
+      operationId: PublicTenants_clients_create
+      description: Yangi tenant yaratish. Baza schemasini avtomatik ochadi, ixtiyoriy
+        ravishda domenni va dastlabki adminni yaratadi.
+      summary: Yangi tenant (o'quv markazi) yaratish
+      tags:
+      - 'Public Admin: Tenants'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClientCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClientCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCreate'
+          description: ''
+  /PublicTenants/clients/{id}/:
+    get:
+      operationId: PublicTenants_clients_retrieve
+      description: Tanlangan tenantning barcha parametrlari, domenlari va foydalanuvchilar
+        soni.
+      summary: Bitta tenant haqida batafsil ma'lumot
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this client.
+        required: true
+      tags:
+      - 'Public Admin: Tenants'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientListRetrieve'
+          description: ''
+    put:
+      operationId: PublicTenants_clients_update
+      description: Markaz nomi, obuna muddati va trial holatini yangilash (schema_name
+        o'zgarmaydi).
+      summary: Tenant ma'lumotlarini to'liq yangilash
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this client.
+        required: true
+      tags:
+      - 'Public Admin: Tenants'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClientUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClientUpdate'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientUpdate'
+          description: ''
+    patch:
+      operationId: PublicTenants_clients_partial_update
+      description: Markazning kerakli maydonlarini yangilash.
+      summary: Tenant ma'lumotlarini qisman yangilash (PATCH)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this client.
+        required: true
+      tags:
+      - 'Public Admin: Tenants'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedClientUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedClientUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedClientUpdate'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientUpdate'
+          description: ''
+    delete:
+      operationId: PublicTenants_clients_destroy
+      description: Tenantni o'chiradi. Xavfsizlik maqsadida PostgreSQL schemasi (schema_name)
+        va undagi ma'lumotlar saqlab qolinadi (DROP SCHEMA qilinmaydi). 'public' schemani
+        o'chirib bo'lmaydi.
+      summary: Tenantni o'chirish (schema_name o'chirilmaydi)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this client.
+        required: true
+      tags:
+      - 'Public Admin: Tenants'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /PublicTenants/clients/{id}/create_admin/:
+    post:
+      operationId: PublicTenants_clients_create_admin_create
+      description: Tanlangan tenantning schemasi ichida yangi SuperAdmin yoki Admin
+        hisobini yaratish.
+      summary: Ushbu tenant ichida yangi admin yaratish
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this client.
+        required: true
+      tags:
+      - 'Public Admin: Tenants'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantCreateAdmin'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TenantCreateAdmin'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TenantCreateAdmin'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientListRetrieve'
+          description: ''
+  /PublicTenants/clients/{id}/stats/:
+    get:
+      operationId: PublicTenants_clients_stats_retrieve
+      description: Ushbu tenantdagi barcha foydalanuvchilar, rollar taqsimoti va o'quv
+        ko'rsatkichlari.
+      summary: Tanlangan tenant bo'yicha to'liq statistika
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this client.
+        required: true
+      tags:
+      - 'Public Admin: Tenants'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientListRetrieve'
+          description: ''
+  /PublicTenants/clients/{id}/users/:
+    get:
+      operationId: PublicTenants_clients_users_retrieve
+      description: Markaz ichidagi barcha userlar ro'yxati (SuperAdmin, Admin, Teacher,
+        Student).
+      summary: Ushbu tenant ichidagi foydalanuvchilar ro'yxati
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this client.
+        required: true
+      tags:
+      - 'Public Admin: Tenants'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientListRetrieve'
+          description: ''
+  /PublicTenants/domains/:
+    get:
+      operationId: PublicTenants_domains_list
+      description: Barcha domenlar ro'yxati. 'tenant' id yoki 'search' orqali filter
+        qilish mumkin.
+      summary: Domenlar ro'yxati
+      parameters:
+      - in: query
+        name: is_primary
+        schema:
+          type: boolean
+        description: Asosiy domen bo'yicha filter
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - in: query
+        name: schema_name
+        schema:
+          type: string
+        description: Tenant schema_name bo'yicha filter
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Domen yoki markaz nomi bo'yicha qidiruv
+      - in: query
+        name: tenant
+        schema:
+          type: integer
+        description: Tenant ID bo'yicha filter
+      tags:
+      - 'Public Admin: Domains'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Domain'
+          description: ''
+    post:
+      operationId: PublicTenants_domains_create
+      description: 'Tanlangan tenantga yangi domen biriktirish (masalan: oxford.edu.uz).'
+      summary: Yangi domen qo'shish
+      tags:
+      - 'Public Admin: Domains'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Domain'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Domain'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Domain'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domain'
+          description: ''
+  /PublicTenants/domains/{id}/:
+    get:
+      operationId: PublicTenants_domains_retrieve
+      description: Domen tafsilotlari.
+      summary: Bitta domen ma'lumotlari
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this domain.
+        required: true
+      tags:
+      - 'Public Admin: Domains'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domain'
+          description: ''
+    put:
+      operationId: PublicTenants_domains_update
+      description: Domen nomini yoki birlamchi holatini yangilash.
+      summary: Domenni to'liq yangilash
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this domain.
+        required: true
+      tags:
+      - 'Public Admin: Domains'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Domain'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Domain'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Domain'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domain'
+          description: ''
+    patch:
+      operationId: PublicTenants_domains_partial_update
+      description: Domenni qisman tahrirlash.
+      summary: Domenni qisman yangilash
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this domain.
+        required: true
+      tags:
+      - 'Public Admin: Domains'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDomain'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDomain'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDomain'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domain'
+          description: ''
+    delete:
+      operationId: PublicTenants_domains_destroy
+      description: Domenni o'chiradi. Public (asosiy platforma) tenantiga tegishli
+        har qanday domenni o'chirish qat'iyan taqiqlanadi.
+      summary: Domenni o'chirish
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this domain.
+        required: true
+      tags:
+      - 'Public Admin: Domains'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /PublicTenants/stats/overview/:
+    get:
+      operationId: PublicTenants_stats_overview_retrieve
+      description: Faol va nofaol tenantlar, foydalanuvchilar umumiy soni, rollar
+        bo'yicha taqsimot, oylik userlar o'sishi va har bir tenant bo'yicha qisqacha
+        ma'lumotlar jamlanmasi.
+      summary: Umumiy platforma statistikasi (Overview)
+      tags:
+      - 'Public Admin: Statistics'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverviewStatsResponse'
+          description: ''
+  /PublicTenants/stats/roles/:
+    get:
+      operationId: PublicTenants_stats_roles_retrieve
+      description: SuperAdmin, Admin, Teacher, Student rollari bo'yicha umumiy soni
+        va faol/nofaol taqsimoti. Ixtiyoriy ravishda 'tenant_id' yoki 'schema_name'
+        orqali bitta markaz bo'yicha ko'rish mumkin.
+      summary: Foydalanuvchilar rollari statistikasi
+      parameters:
+      - in: query
+        name: schema_name
+        schema:
+          type: string
+        description: Tenant schema_name bo'yicha filter
+      - in: query
+        name: tenant_id
+        schema:
+          type: integer
+        description: Faqat bitta tenant bo'yicha filter
+      tags:
+      - 'Public Admin: Statistics'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRolesStatsResponse'
+          description: ''
+  /PublicTenants/stats/tenants-summary/:
+    get:
+      operationId: PublicTenants_stats_tenants_summary_retrieve
+      description: Aktiv, noaktiv, trial, obunasi tugayotgan tenantlar va ularning
+        obuna holatlari bo'yicha ro'yxati.
+      summary: Faol va nofaol tenantlar, obuna xulosasi
+      tags:
+      - 'Public Admin: Statistics'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantsSummaryStatsResponse'
+          description: ''
+  /PublicTenants/stats/user-growth/:
+    get:
+      operationId: PublicTenants_stats_user_growth_retrieve
+      description: Grafiklar uchun oylik va kunlik userlar ro'yxatdan o'tish dinamikasi.
+        'months' (default 6) va 'days' (default 30) parametrlari orqali boshqariladi.
+      summary: Userlar o'sish dinamikasi (Growth Trend)
+      parameters:
+      - in: query
+        name: days
+        schema:
+          type: integer
+        description: 'Ko''riladigan kunlar soni (default: 30, max: 90)'
+      - in: query
+        name: months
+        schema:
+          type: integer
+        description: 'Ko''riladigan oylar soni (default: 6, max: 24)'
+      tags:
+      - 'Public Admin: Statistics'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGrowthResponse'
+          description: ''
+  /User/:
+    get:
+      operationId: User_list
+      description: Barcha foydalanuvchilar ro'yxati (faqat Admin va SuperAdmin uchun).
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+    post:
+      operationId: User_create
+      description: Yangi foydalanuvchi yaratish (SuperAdmin yaratish taqiqlangan;
+        Admin faqat Teacher va Student yarata oladi).
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreate'
+          description: ''
+  /User/{id}/:
+    get:
+      operationId: User_retrieve
+      description: Bitta foydalanuvchini ko'rish (faqat o'zi yoki Admin/SuperAdmin).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: User_partial_update
+      description: Foydalanuvchi ma'lumotlarini qisman yangilash (PATCH).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdate'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdate'
+          description: ''
+    delete:
+      operationId: User_destroy
+      description: Foydalanuvchini o'chirish (faqat Admin va SuperAdmin).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /User/{id}/parent/:
+    get:
+      operationId: User_parent_retrieve
+      description: Foydalanuvchining (o'quvchining) ota-onasi ma'lumotlarini olish
+        (chat_id xavfsizlik uchun ko'rsatilmaydi).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentSerializers'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /User/{id}/parent-status/:
+    get:
+      operationId: User_parent_status_retrieve
+      description: Foydalanuvchining (o'quvchining) ota-onasi telegram botga ulanganligini
+        tekshirish (chat_id butunlay yashirilgan holda faqat status qaytariladi).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserParentStatus'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /User/change-password/:
+    post:
+      operationId: User_change_password_create
+      description: Foydalanuvchi parolini yangilash (new_password va new_password_confirm
+        orqali).
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+        required: true
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /User/login/:
+    post:
+      operationId: User_login_create
+      description: |-
+        Foydalanuvchi login qilishi uchun API.
+        Username yoki Phone orqali ishlaydi.
+        Natijada access, refresh tokenlar va userning id, role lari qaytadi.
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomTokenObtainPair'
+          description: ''
+  /User/me/:
+    get:
+      operationId: User_me_retrieve
+      description: Hozirgi tizimga kirgan foydalanuvchi o'z profilini ko'rish yoki
+        PATCH orqali tahrirlash endpointi.
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: User_me_partial_update
+      description: Hozirgi tizimga kirgan foydalanuvchi o'z profilini ko'rish yoki
+        PATCH orqali tahrirlash endpointi.
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - jwtAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /User/token/refresh/:
+    post:
+      operationId: User_token_refresh_create
+      description: Yangi access token olish uchun refresh tokenni yuborish.
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+components:
+  schemas:
+    AddStudentToGroup:
+      type: object
+      description: Guruhga talaba qo'shish uchun serializer.
+      properties:
+        student_id:
+          type: integer
+          description: Guruhga qo'shilayotgan talaba (User) ID si
+      required:
+      - student_id
+    Attendance:
+      type: object
+      description: |-
+        Attendance (Davomat) modeli uchun asosiy serializer.
+        - Faqat o'qituvchi davomat qila oladi.
+        - O'qituvchi faqat o'zining guruhi uchun davomat qila oladi.
+        - Talaba aynan shu guruh talabasi bo'lishi shart.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lesson:
+          type: integer
+        lesson_title:
+          type: string
+          readOnly: true
+        group_id:
+          type: integer
+          readOnly: true
+        group_name:
+          type: string
+          readOnly: true
+        student:
+          type: integer
+        student_name:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusF1cEnum'
+        status_display:
+          type: string
+          readOnly: true
+        note:
+          type: string
+        marked_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - group_id
+      - group_name
+      - id
+      - lesson
+      - lesson_title
+      - marked_at
+      - status_display
+      - student
+      - student_name
+    BulkAttendance:
+      type: object
+      description: Butun guruh uchun bitta darsda ommaviy (bulk) davomat qilish serializeri.
+      properties:
+        lesson:
+          type: integer
+        attendances:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkAttendanceItem'
+      required:
+      - attendances
+      - lesson
+    BulkAttendanceItem:
+      type: object
+      properties:
+        student:
+          type: integer
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusF1cEnum'
+          default: absent
+        note:
+          type: string
+          default: ''
+      required:
+      - student
+    ChangePassword:
+      type: object
+      description: |-
+        Parolni o'zgartirish uchun serializer.
+        new_password va new_password_confirm talab qilinadi.
+        Ixtiyoriy ravishda old_password ham tekshirilishi mumkin.
+      properties:
+        old_password:
+          type: string
+          writeOnly: true
+          description: Eski parol (ixtiyoriy, agar kiritilsa tekshiriladi)
+        new_password:
+          type: string
+          writeOnly: true
+          description: Yangi parol
+        new_password_confirm:
+          type: string
+          writeOnly: true
+          description: Yangi parolni tasdiqlash
+      required:
+      - new_password
+      - new_password_confirm
+    ClientCreate:
+      type: object
+      description: |-
+        Yangi o'quv markazi (Tenant) yaratish uchun serializer.
+        Avtomatik ravishda postgresql schema ochadi, ixtiyoriy ravishda domenni va
+        dastlabki markaz administratorini (Tenant Admin) yaratib beradi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        schema_name:
+          type: string
+          maxLength: 63
+        paid_until:
+          type: string
+          format: date
+        on_trial:
+          type: boolean
+        domain:
+          type: string
+          description: 'Tenant uchun asosiy domen (masalan: cambridge.localhost yoki
+            cambridge.uz)'
+          maxLength: 253
+        admin_username:
+          type: string
+          description: Ushbu tenant uchun yaratiladigan admin login (username)
+          maxLength: 150
+        admin_password:
+          type: string
+          writeOnly: true
+          description: Tenant admin paroli
+          maxLength: 128
+        admin_phone:
+          type: string
+          description: 'Tenant admin telefon raqami (masalan: +998901234567)'
+          maxLength: 20
+        admin_email:
+          description: Tenant admin emaili
+          oneOf:
+          - type: string
+            format: email
+          - type: string
+            maxLength: 0
+      required:
+      - id
+      - name
+      - on_trial
+      - paid_until
+      - schema_name
+    ClientDomainNested:
+      type: object
+      description: Client ichida ko'rinadigan qisqa domen ma'lumoti.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        domain:
+          type: string
+          maxLength: 253
+        is_primary:
+          type: boolean
+      required:
+      - domain
+      - id
+    ClientListRetrieve:
+      type: object
+      description: O'quv markazlari (Tenantlar) ro'yxati va batafsil ma'lumotlarini
+        olish uchun serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        schema_name:
+          type: string
+          readOnly: true
+        paid_until:
+          type: string
+          format: date
+          readOnly: true
+        on_trial:
+          type: boolean
+          readOnly: true
+        created_on:
+          type: string
+          format: date
+          readOnly: true
+        is_active:
+          type: boolean
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        days_left:
+          type: integer
+          readOnly: true
+        primary_domain:
+          type: string
+          nullable: true
+          readOnly: true
+        domains:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientDomainNested'
+          readOnly: true
+        users_count:
+          type: integer
+          readOnly: true
+        users_by_role:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+      required:
+      - created_on
+      - days_left
+      - domains
+      - id
+      - is_active
+      - name
+      - on_trial
+      - paid_until
+      - primary_domain
+      - schema_name
+      - status
+      - users_by_role
+      - users_count
+    ClientUpdate:
+      type: object
+      description: |-
+        Mavjud o'quv markazini (Tenant) tahrirlash serializeri.
+        (Eslatma: schema_name o'zgartirilmaydi).
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        schema_name:
+          type: string
+          readOnly: true
+        paid_until:
+          type: string
+          format: date
+        on_trial:
+          type: boolean
+        created_on:
+          type: string
+          format: date
+          readOnly: true
+      required:
+      - created_on
+      - id
+      - name
+      - on_trial
+      - paid_until
+      - schema_name
+    Course:
+      type: object
+      description: |-
+        Course modeli uchun serializer.
+        Barcha maydonlarni o'z ichiga oladi va validatsiyalarni bajaradi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+          nullable: true
+          maxLength: 256
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        duration:
+          type: string
+        lesson_quantity:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - duration
+      - id
+      - lesson_quantity
+      - name
+      - price
+      - updated_at
+    CourseDistribution:
+      type: object
+      properties:
+        course_id:
+          type: integer
+        course_name:
+          type: string
+        groups_count:
+          type: integer
+        active_students_count:
+          type: integer
+        total_capacity:
+          type: integer
+      required:
+      - active_students_count
+      - course_id
+      - course_name
+      - groups_count
+      - total_capacity
+    CustomTokenObtainPair:
+      type: object
+      description: |-
+        Login uchun JWT serializer.
+        Username yoki Phone orqali autentifikatsiya qilishni qo'llab-quvvatlaydi.
+        Token bilan birga user ning id, role va joriy tenantning schema_name sini qaytaradi.
+      properties:
+        username:
+          type: string
+          description: Username yoki telefon raqami (+998...)
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    DailyTrendItem:
+      type: object
+      properties:
+        date:
+          type: string
+        new_users:
+          type: integer
+      required:
+      - date
+      - new_users
+    DayOfWeekEnum:
+      enum:
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      - sunday
+      type: string
+      description: |-
+        * `monday` - Dushanba
+        * `tuesday` - Seshanba
+        * `wednesday` - Chorshanba
+        * `thursday` - Payshanba
+        * `friday` - Juma
+        * `saturday` - Shanba
+        * `sunday` - Yakshanba
+    Domain:
+      type: object
+      description: Domenlarni boshqarish (CRUD) uchun serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        domain:
+          type: string
+          maxLength: 253
+        tenant:
+          type: integer
+        tenant_name:
+          type: string
+          readOnly: true
+        tenant_schema_name:
+          type: string
+          readOnly: true
+        is_primary:
+          type: boolean
+      required:
+      - domain
+      - id
+      - tenant
+      - tenant_name
+      - tenant_schema_name
+    ExamAnswerQuestion:
+      type: object
+      description: O'qituvchi uchun savol variantlari serializeri (to'g'ri javob belgisi
+        bilan).
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        question:
+          type: integer
+          title: Savol
+        answer:
+          type: string
+          title: Variant matni
+          maxLength: 512
+        is_correct:
+          type: boolean
+          title: To'g'ri javobmi
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - answer
+      - created_at
+      - id
+      - question
+      - updated_at
+    ExamAttemptDetail:
+      type: object
+      description: Exam attempt (imtihon topshirig'i) tafsilotlari.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        exam:
+          type: integer
+          title: Imtihon
+        exam_name:
+          type: string
+          readOnly: true
+        student:
+          type: integer
+          title: Talaba
+        student_name:
+          type: string
+          readOnly: true
+        started_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Boshlangan vaqti
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+          title: Tugatilgan vaqti
+        score:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: To'plangan ball
+        passing_score:
+          type: integer
+          readOnly: true
+        total_points:
+          type: integer
+          readOnly: true
+        is_completed:
+          type: boolean
+          title: Tugatilganmi
+          description: Talaba imtihonni topshiryapti yoki tugatgan
+        is_passed:
+          type: boolean
+          title: O'tish bali to'planganmi
+        remaining_seconds:
+          type: integer
+          readOnly: true
+        is_timed_out:
+          type: boolean
+          readOnly: true
+        submission_file:
+          type: string
+          format: uri
+          nullable: true
+          title: Yuklangan yechim/javob fayli
+        teacher_comment:
+          type: string
+          nullable: true
+          title: O'qituvchi sharhi
+        student_answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExamStudentAnswerDetail'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - exam
+      - exam_name
+      - id
+      - is_timed_out
+      - passing_score
+      - remaining_seconds
+      - started_at
+      - student
+      - student_answers
+      - student_name
+      - total_points
+      - updated_at
+    ExamAttemptSubmit:
+      type: object
+      description: Talaba tomonidan imtihon topshirilishi / yuklanishi uchun serializer.
+      properties:
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExamStudentAnswerInput'
+        submission_file:
+          type: string
+          format: uri
+          nullable: true
+    ExamModels:
+      type: object
+      description: |-
+        ExamModels uchun to'liq CRUD serializeri.
+        Faqat o'z guruhiga biriktirilgan o'qituvchi imtihon yarata va boshqara oladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        group:
+          type: integer
+          title: Guruh
+        group_name:
+          type: string
+          readOnly: true
+        teacher_name:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          title: Imtihon nomi
+          maxLength: 64
+        description:
+          type: string
+          nullable: true
+          title: Tavsif
+        deadline:
+          type: string
+          format: date-time
+          title: Topshirishning oxirgi muddati
+        duration:
+          type: string
+          nullable: true
+          title: Imtihon davomiyligi
+          description: 'Masalan: 02:00:00 (2 soat) yoki 01:30:00 (1.5 soat)'
+        passing_score:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: O'tish bali
+          description: Imtihondan o'tish uchun talab qilinadigan minimal ball
+        total_points:
+          type: integer
+          readOnly: true
+        questions_count:
+          type: integer
+          readOnly: true
+        is_active:
+          type: boolean
+          title: Faolmi
+        is_expired:
+          type: boolean
+          readOnly: true
+        questions:
+          type: string
+          readOnly: true
+        my_attempt:
+          allOf:
+          - $ref: '#/components/schemas/StudentExamAttemptBrief'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - deadline
+      - group
+      - group_name
+      - id
+      - is_expired
+      - my_attempt
+      - name
+      - questions
+      - questions_count
+      - teacher_name
+      - total_points
+      - updated_at
+    ExamQuestion:
+      type: object
+      description: O'qituvchi uchun savollar va ularning to'g'ri/noto'g'ri variantlari
+        serializeri.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        exam:
+          type: integer
+          title: Imtihon
+        question:
+          type: string
+          title: Savol matni
+          maxLength: 256
+        file:
+          type: string
+          format: uri
+          nullable: true
+          title: Savolga biriktiriladigan file
+        points:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Savol uchun ball
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExamAnswerQuestion'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - answers
+      - created_at
+      - exam
+      - id
+      - question
+      - updated_at
+    ExamStudentAnswerDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        question:
+          type: integer
+          title: Savol
+        question_text:
+          type: string
+          readOnly: true
+        selected_answer:
+          type: integer
+          nullable: true
+          title: Tanlangan javob
+        selected_answer_text:
+          type: string
+          readOnly: true
+          nullable: true
+        is_correct:
+          type: boolean
+          title: To'g'ri topildimi
+      required:
+      - id
+      - question
+      - question_text
+      - selected_answer_text
+    ExamStudentAnswerInput:
+      type: object
+      properties:
+        question_id:
+          type: integer
+        answer_id:
+          type: integer
+          nullable: true
+      required:
+      - question_id
+    Group:
+      type: object
+      description: |-
+        Group modeli uchun serializer:
+        - course_name, teacher_name, status_display kabi yordamchi maydonlar qo'shilgan.
+        - active_students_count va available_seats (bo'sh joylar) hisoblab beriladi.
+        - O'qituvchi faqat TEACHER roliga ega bo'lishi tekshiriladi.
+        - Guruh holati cancelled yoki completed bo'lsa, uni o'zgartirish taqiqlanadi.
+        - end_date faqat status completed, cancelled yoki paused qilinganda avtomatik yoziladi, user uni kiritmaydi.
+        - capacity o'zgarganda faol talabalar sonidan kam bo'lmasligi tekshiriladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        course:
+          type: integer
+        course_name:
+          type: string
+          readOnly: true
+        teacher:
+          type: integer
+        teacher_name:
+          type: string
+          nullable: true
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Guruh tugash sanasi. Status completed, cancelled yoki paused
+            qilinganda avtomatik belgilanadi.
+        capacity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Qancha talaba ketishi
+        active_students_count:
+          type: integer
+          readOnly: true
+        available_seats:
+          type: integer
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusA5aEnum'
+        status_display:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - active_students_count
+      - available_seats
+      - course
+      - course_name
+      - created_at
+      - end_date
+      - id
+      - name
+      - start_date
+      - status_display
+      - teacher
+      - teacher_name
+      - updated_at
+    GroupStatistics:
+      type: object
+      properties:
+        total_groups:
+          type: integer
+          description: Umumiy guruhlar soni
+        by_status:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/StatusStatItem'
+          description: Statuslar bo'yicha taqsimot (recruiting, active, completed,
+            paused, cancelled)
+        students_statistics:
+          allOf:
+          - $ref: '#/components/schemas/StudentsStatistics'
+          description: Talabalar va sig'imlar bo'yicha statistika
+        by_student_ranges:
+          allOf:
+          - $ref: '#/components/schemas/StudentRanges'
+          description: Talabalar soni oraliqlari bo'yicha guruhlar taqsimoti
+        by_course:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseDistribution'
+          description: Kurslar bo'yicha guruhlar va talabalar taqsimoti
+        by_teacher:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeacherDistribution'
+          description: O'qituvchilar bo'yicha guruhlar va talabalar taqsimoti
+      required:
+      - by_course
+      - by_status
+      - by_student_ranges
+      - by_teacher
+      - students_statistics
+      - total_groups
+    GroupStudent:
+      type: object
+      description: Guruhdagi talabalar (GroupStudent) ro'yxatini ko'rish uchun serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        student_id:
+          type: integer
+          readOnly: true
+        student_username:
+          type: string
+          readOnly: true
+        student_name:
+          type: string
+          nullable: true
+          readOnly: true
+        student_phone:
+          type: string
+          readOnly: true
+        joined_at:
+          type: string
+          format: date
+          readOnly: true
+        left_at:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+        is_active:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - is_active
+      - joined_at
+      - left_at
+      - student_id
+      - student_name
+      - student_phone
+      - student_username
+    Homework:
+      type: object
+      description: |-
+        Homework modeli uchun serializer.
+        Talaba uchun o'zining topshirgan vazifasi, olgan bahosi (score) va
+        o'qituvchi sharhi (teacher_comment) ham my_submission maydonida taqdim etiladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lesson:
+          type: integer
+        lesson_title:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        deadline:
+          type: string
+          format: date-time
+        max_score:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/HomeworkResource'
+          readOnly: true
+        my_submission:
+          allOf:
+          - $ref: '#/components/schemas/StudentSubmissionBrief'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - deadline
+      - id
+      - lesson
+      - lesson_title
+      - my_submission
+      - resources
+      - title
+      - updated_at
+    HomeworkResource:
+      type: object
+      description: |-
+        HomeworkResource modeli uchun serializer.
+        Fayl yuklanganda 5 MB hajmdan oshmasligi va faqat PDF, DOC, DOCX
+        formatida bo'lishi tekshiriladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        homework:
+          type: integer
+        title:
+          type: string
+          maxLength: 200
+        file:
+          type: string
+          format: uri
+          nullable: true
+          description: Maksimal 5 MB. Faqat PDF, DOC, DOCX fayllar ruxsat etiladi.
+        url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - homework
+      - id
+      - title
+      - updated_at
+    HomeworkSubmissionDetail:
+      type: object
+      description: |-
+        Topshirilgan vazifalarni to'liq ko'rish uchun serializer.
+        Talaba va o'qituvchi baho (score) hamda sharh (teacher_comment)ni ko'ra oladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        homework:
+          type: integer
+          readOnly: true
+        homework_title:
+          type: string
+          readOnly: true
+        max_score:
+          type: integer
+          readOnly: true
+        student:
+          type: integer
+          readOnly: true
+        student_name:
+          type: string
+          nullable: true
+          readOnly: true
+        answer:
+          type: string
+          readOnly: true
+        file:
+          type: string
+          format: uri
+          nullable: true
+          readOnly: true
+        submitted_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        score:
+          type: integer
+          readOnly: true
+          nullable: true
+        teacher_comment:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - answer
+      - created_at
+      - file
+      - homework
+      - homework_title
+      - id
+      - max_score
+      - score
+      - student
+      - student_name
+      - submitted_at
+      - teacher_comment
+      - updated_at
+    Lesson:
+      type: object
+      description: |-
+        Lesson (Dars) modeli uchun serializer:
+        - Guruh nomi, kurs nomi, o'qituvchi ismi read-only sifatida taqdim etiladi.
+        - Faqat o'qituvchi o'ziga biriktirilgan guruhlar uchun dars yaratishi mumkin.
+        - Dars boshlanish va tugash vaqti mantiqiy to'g'riligi tekshiriladi (end_time > start_time).
+        - Statusi cancelled yoki completed bo'lgan guruhlarga dars qo'shib/o'zgartirib bo'lmaydi.
+        - Guruh ichida bir xil raqamli dars takrorlanmasligi tekshiriladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        group:
+          type: integer
+        group_name:
+          type: string
+          readOnly: true
+        course_name:
+          type: string
+          readOnly: true
+        teacher_name:
+          type: string
+          nullable: true
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        lesson_number:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        date:
+          type: string
+          format: date
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - course_name
+      - created_at
+      - date
+      - end_time
+      - group
+      - group_name
+      - id
+      - lesson_number
+      - start_time
+      - teacher_name
+      - title
+      - updated_at
+    LessonMaterial:
+      type: object
+      description: |-
+        LessonMaterial modeli uchun serializer.
+        - Faqat o'qituvchilar material qo'sha oladi.
+        - O'qituvchi faqat o'zining guruhi uchun material qo'sha oladi.
+        - Faqat o'tilgan darslar uchun material qo'sha oladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lesson:
+          type: integer
+        lesson_title:
+          type: string
+          readOnly: true
+        group_id:
+          type: integer
+          readOnly: true
+        group_name:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/LessonMaterialResource'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - group_id
+      - group_name
+      - id
+      - lesson
+      - lesson_title
+      - resources
+      - title
+      - updated_at
+    LessonMaterialResource:
+      type: object
+      description: LessonMaterialResource modeli uchun serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        material:
+          type: integer
+        file:
+          type: string
+          format: uri
+          nullable: true
+        url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - material
+      - updated_at
+    MonthlyTrendItem:
+      type: object
+      properties:
+        month:
+          type: string
+        new_users:
+          type: integer
+        roles:
+          type: object
+          additionalProperties: {}
+      required:
+      - month
+      - new_users
+      - roles
+    OverviewStatsResponse:
+      type: object
+      properties:
+        tenants:
+          $ref: '#/components/schemas/TenantMetricsResponse'
+        users:
+          $ref: '#/components/schemas/UserMetricsResponse'
+        per_tenant_summary:
+          type: array
+          items:
+            $ref: '#/components/schemas/TenantSummaryItem'
+      required:
+      - per_tenant_summary
+      - tenants
+      - users
+    ParentSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          title: Ota-onalarning to'liq ismi sharifi
+        phone:
+          type: string
+          maxLength: 128
+        user:
+          type: integer
+      required:
+      - full_name
+      - id
+      - phone
+      - user
+    PatchedAttendance:
+      type: object
+      description: |-
+        Attendance (Davomat) modeli uchun asosiy serializer.
+        - Faqat o'qituvchi davomat qila oladi.
+        - O'qituvchi faqat o'zining guruhi uchun davomat qila oladi.
+        - Talaba aynan shu guruh talabasi bo'lishi shart.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lesson:
+          type: integer
+        lesson_title:
+          type: string
+          readOnly: true
+        group_id:
+          type: integer
+          readOnly: true
+        group_name:
+          type: string
+          readOnly: true
+        student:
+          type: integer
+        student_name:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusF1cEnum'
+        status_display:
+          type: string
+          readOnly: true
+        note:
+          type: string
+        marked_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedClientUpdate:
+      type: object
+      description: |-
+        Mavjud o'quv markazini (Tenant) tahrirlash serializeri.
+        (Eslatma: schema_name o'zgartirilmaydi).
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        schema_name:
+          type: string
+          readOnly: true
+        paid_until:
+          type: string
+          format: date
+        on_trial:
+          type: boolean
+        created_on:
+          type: string
+          format: date
+          readOnly: true
+    PatchedCourse:
+      type: object
+      description: |-
+        Course modeli uchun serializer.
+        Barcha maydonlarni o'z ichiga oladi va validatsiyalarni bajaradi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+          nullable: true
+          maxLength: 256
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        duration:
+          type: string
+        lesson_quantity:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedDomain:
+      type: object
+      description: Domenlarni boshqarish (CRUD) uchun serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        domain:
+          type: string
+          maxLength: 253
+        tenant:
+          type: integer
+        tenant_name:
+          type: string
+          readOnly: true
+        tenant_schema_name:
+          type: string
+          readOnly: true
+        is_primary:
+          type: boolean
+    PatchedExamAnswerQuestion:
+      type: object
+      description: O'qituvchi uchun savol variantlari serializeri (to'g'ri javob belgisi
+        bilan).
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        question:
+          type: integer
+          title: Savol
+        answer:
+          type: string
+          title: Variant matni
+          maxLength: 512
+        is_correct:
+          type: boolean
+          title: To'g'ri javobmi
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedExamModels:
+      type: object
+      description: |-
+        ExamModels uchun to'liq CRUD serializeri.
+        Faqat o'z guruhiga biriktirilgan o'qituvchi imtihon yarata va boshqara oladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        group:
+          type: integer
+          title: Guruh
+        group_name:
+          type: string
+          readOnly: true
+        teacher_name:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          title: Imtihon nomi
+          maxLength: 64
+        description:
+          type: string
+          nullable: true
+          title: Tavsif
+        deadline:
+          type: string
+          format: date-time
+          title: Topshirishning oxirgi muddati
+        duration:
+          type: string
+          nullable: true
+          title: Imtihon davomiyligi
+          description: 'Masalan: 02:00:00 (2 soat) yoki 01:30:00 (1.5 soat)'
+        passing_score:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: O'tish bali
+          description: Imtihondan o'tish uchun talab qilinadigan minimal ball
+        total_points:
+          type: integer
+          readOnly: true
+        questions_count:
+          type: integer
+          readOnly: true
+        is_active:
+          type: boolean
+          title: Faolmi
+        is_expired:
+          type: boolean
+          readOnly: true
+        questions:
+          type: string
+          readOnly: true
+        my_attempt:
+          allOf:
+          - $ref: '#/components/schemas/StudentExamAttemptBrief'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedExamQuestion:
+      type: object
+      description: O'qituvchi uchun savollar va ularning to'g'ri/noto'g'ri variantlari
+        serializeri.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        exam:
+          type: integer
+          title: Imtihon
+        question:
+          type: string
+          title: Savol matni
+          maxLength: 256
+        file:
+          type: string
+          format: uri
+          nullable: true
+          title: Savolga biriktiriladigan file
+        points:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Savol uchun ball
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExamAnswerQuestion'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedGroup:
+      type: object
+      description: |-
+        Group modeli uchun serializer:
+        - course_name, teacher_name, status_display kabi yordamchi maydonlar qo'shilgan.
+        - active_students_count va available_seats (bo'sh joylar) hisoblab beriladi.
+        - O'qituvchi faqat TEACHER roliga ega bo'lishi tekshiriladi.
+        - Guruh holati cancelled yoki completed bo'lsa, uni o'zgartirish taqiqlanadi.
+        - end_date faqat status completed, cancelled yoki paused qilinganda avtomatik yoziladi, user uni kiritmaydi.
+        - capacity o'zgarganda faol talabalar sonidan kam bo'lmasligi tekshiriladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        course:
+          type: integer
+        course_name:
+          type: string
+          readOnly: true
+        teacher:
+          type: integer
+        teacher_name:
+          type: string
+          nullable: true
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+          description: Guruh tugash sanasi. Status completed, cancelled yoki paused
+            qilinganda avtomatik belgilanadi.
+        capacity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: Qancha talaba ketishi
+        active_students_count:
+          type: integer
+          readOnly: true
+        available_seats:
+          type: integer
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusA5aEnum'
+        status_display:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedHomework:
+      type: object
+      description: |-
+        Homework modeli uchun serializer.
+        Talaba uchun o'zining topshirgan vazifasi, olgan bahosi (score) va
+        o'qituvchi sharhi (teacher_comment) ham my_submission maydonida taqdim etiladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lesson:
+          type: integer
+        lesson_title:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        deadline:
+          type: string
+          format: date-time
+        max_score:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/HomeworkResource'
+          readOnly: true
+        my_submission:
+          allOf:
+          - $ref: '#/components/schemas/StudentSubmissionBrief'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedHomeworkResource:
+      type: object
+      description: |-
+        HomeworkResource modeli uchun serializer.
+        Fayl yuklanganda 5 MB hajmdan oshmasligi va faqat PDF, DOC, DOCX
+        formatida bo'lishi tekshiriladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        homework:
+          type: integer
+        title:
+          type: string
+          maxLength: 200
+        file:
+          type: string
+          format: uri
+          nullable: true
+          description: Maksimal 5 MB. Faqat PDF, DOC, DOCX fayllar ruxsat etiladi.
+        url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedLesson:
+      type: object
+      description: |-
+        Lesson (Dars) modeli uchun serializer:
+        - Guruh nomi, kurs nomi, o'qituvchi ismi read-only sifatida taqdim etiladi.
+        - Faqat o'qituvchi o'ziga biriktirilgan guruhlar uchun dars yaratishi mumkin.
+        - Dars boshlanish va tugash vaqti mantiqiy to'g'riligi tekshiriladi (end_time > start_time).
+        - Statusi cancelled yoki completed bo'lgan guruhlarga dars qo'shib/o'zgartirib bo'lmaydi.
+        - Guruh ichida bir xil raqamli dars takrorlanmasligi tekshiriladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        group:
+          type: integer
+        group_name:
+          type: string
+          readOnly: true
+        course_name:
+          type: string
+          readOnly: true
+        teacher_name:
+          type: string
+          nullable: true
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        lesson_number:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        date:
+          type: string
+          format: date
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedLessonMaterial:
+      type: object
+      description: |-
+        LessonMaterial modeli uchun serializer.
+        - Faqat o'qituvchilar material qo'sha oladi.
+        - O'qituvchi faqat o'zining guruhi uchun material qo'sha oladi.
+        - Faqat o'tilgan darslar uchun material qo'sha oladi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lesson:
+          type: integer
+        lesson_title:
+          type: string
+          readOnly: true
+        group_id:
+          type: integer
+          readOnly: true
+        group_name:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/LessonMaterialResource'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedLessonMaterialResource:
+      type: object
+      description: LessonMaterialResource modeli uchun serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        material:
+          type: integer
+        file:
+          type: string
+          format: uri
+          nullable: true
+        url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedParentSerializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          title: Ota-onalarning to'liq ismi sharifi
+        phone:
+          type: string
+          maxLength: 128
+        user:
+          type: integer
+    PatchedSchedule:
+      type: object
+      description: |-
+        Schedule (Dars jadvali) modeli uchun serializer.
+        - Guruh nomi va haftaning kuni matnli ko'rinishda taqdim etiladi.
+        - Dars boshlanish va tugash vaqti mantiqan to'g'riligi tekshiriladi (end_time > start_time).
+        - Statusi cancelled yoki completed bo'lgan guruhlarga dars jadvali biriktirib bo'lmaydi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        group:
+          type: integer
+        group_name:
+          type: string
+          readOnly: true
+        day_of_week:
+          $ref: '#/components/schemas/DayOfWeekEnum'
+        day_of_week_display:
+          type: string
+          readOnly: true
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        room:
+          type: string
+          maxLength: 100
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedStudentHomeworkSubmission:
+      type: object
+      description: |-
+        Talaba o'z vazifasini topshirishi uchun alohida serializer.
+        TALAB BO'YICHA: Ushbu serializerdan o'qituvchining bahosi (score) va komenti (teacher_comment)
+        butunlay olib tashlangan!
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        homework:
+          type: integer
+        answer:
+          type: string
+        file:
+          type: string
+          format: uri
+          nullable: true
+        submitted_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedTeacherGradeAttempt:
+      type: object
+      description: Aynan shu guruh o'qituvchisi tomonidan talabaning imtihonini baholash
+        serializeri.
+      properties:
+        score:
+          type: integer
+          minimum: 0
+          description: Talabaga qo'yiladigan yakuniy ball.
+        teacher_comment:
+          type: string
+          description: O'qituvchining imtihon natijasi bo'yicha sharhi.
+    PatchedTeacherGradeSubmission:
+      type: object
+      description: |-
+        O'qituvchi tomonidan talabaning topshirgan vazifasini baholash
+        va izoh qoldirish uchun serializer.
+      properties:
+        score:
+          type: integer
+          minimum: 0
+          description: O'qituvchi qo'ygan ball (0 dan maksimal ballgacha).
+        teacher_comment:
+          type: string
+          description: O'qituvchining vazifa bo'yicha fikr-mulohazasi.
+    PatchedUser:
+      type: object
+      description: Foydalanuvchilar ro'yxati va batafsil ma'lumotlarini ko'rish uchun
+        serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        role:
+          $ref: '#/components/schemas/Role45dEnum'
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUserUpdate:
+      type: object
+      description: Foydalanuvchini faqat PATCH orqali qisman tahrirlash uchun serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        phone:
+          type: string
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        role:
+          allOf:
+          - $ref: '#/components/schemas/Role45dEnum'
+          description: |-
+            Foydalanuvchi roli
+
+            * `SUPER_ADMIN` - Super Admin
+            * `ADMIN` - Admin
+            * `TEACHER` - Teacher
+            * `STUDENT` - Student
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+    RemoveStudentFromGroup:
+      type: object
+      description: Guruhdan talabani chiqarish uchun serializer.
+      properties:
+        student_id:
+          type: integer
+          description: Guruhdan chiqarilayotgan talaba (User) ID si
+      required:
+      - student_id
+    Role45dEnum:
+      enum:
+      - SUPER_ADMIN
+      - ADMIN
+      - TEACHER
+      - STUDENT
+      type: string
+      description: |-
+        * `SUPER_ADMIN` - Super Admin
+        * `ADMIN` - Admin
+        * `TEACHER` - Teacher
+        * `STUDENT` - Student
+    RoleStatsItem:
+      type: object
+      properties:
+        total:
+          type: integer
+        active:
+          type: integer
+        inactive:
+          type: integer
+        percentage:
+          type: number
+          format: double
+      required:
+      - active
+      - inactive
+      - percentage
+      - total
+    Schedule:
+      type: object
+      description: |-
+        Schedule (Dars jadvali) modeli uchun serializer.
+        - Guruh nomi va haftaning kuni matnli ko'rinishda taqdim etiladi.
+        - Dars boshlanish va tugash vaqti mantiqan to'g'riligi tekshiriladi (end_time > start_time).
+        - Statusi cancelled yoki completed bo'lgan guruhlarga dars jadvali biriktirib bo'lmaydi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        group:
+          type: integer
+        group_name:
+          type: string
+          readOnly: true
+        day_of_week:
+          $ref: '#/components/schemas/DayOfWeekEnum'
+        day_of_week_display:
+          type: string
+          readOnly: true
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        room:
+          type: string
+          maxLength: 100
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - day_of_week
+      - day_of_week_display
+      - end_time
+      - group
+      - group_name
+      - id
+      - start_time
+      - updated_at
+    ScheduleBrief:
+      type: object
+      description: Guruh dars jadvali uchun qisqacha serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        day_of_week:
+          allOf:
+          - $ref: '#/components/schemas/DayOfWeekEnum'
+          readOnly: true
+        day_of_week_display:
+          type: string
+          readOnly: true
+        start_time:
+          type: string
+          format: time
+          readOnly: true
+        end_time:
+          type: string
+          format: time
+          readOnly: true
+        room:
+          type: string
+          readOnly: true
+      required:
+      - day_of_week
+      - day_of_week_display
+      - end_time
+      - id
+      - room
+      - start_time
+    StatusA5aEnum:
+      enum:
+      - recruiting
+      - active
+      - completed
+      - cancelled
+      - paused
+      type: string
+      description: |-
+        * `recruiting` - O‘quvchilar yig‘ilmoqda
+        * `active` - Faol
+        * `completed` - Tugallangan
+        * `cancelled` - Bekor qilingan
+        * `paused` - To‘xtatilgan
+    StatusF1cEnum:
+      enum:
+      - present
+      - absent
+      - late
+      - excused
+      type: string
+      description: |-
+        * `present` - Kelgan
+        * `absent` - Kelmagan
+        * `late` - Kechikkan
+        * `excused` - Sababli
+    StatusStatItem:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Ushbu statusdagi guruhlar soni
+        percentage:
+          type: number
+          format: double
+          description: Umumiy guruhlarga nisbatan foiz ulushi
+        label:
+          type: string
+          description: Statusning o'zbekcha ifodasi
+      required:
+      - count
+      - label
+      - percentage
+    StudentExamAttemptBrief:
+      type: object
+      properties:
+        id:
+          type: integer
+        started_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        score:
+          type: integer
+        is_completed:
+          type: boolean
+        is_passed:
+          type: boolean
+        remaining_seconds:
+          type: integer
+      required:
+      - finished_at
+      - id
+      - is_completed
+      - is_passed
+      - remaining_seconds
+      - score
+      - started_at
+    StudentHomeworkSubmission:
+      type: object
+      description: |-
+        Talaba o'z vazifasini topshirishi uchun alohida serializer.
+        TALAB BO'YICHA: Ushbu serializerdan o'qituvchining bahosi (score) va komenti (teacher_comment)
+        butunlay olib tashlangan!
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        homework:
+          type: integer
+        answer:
+          type: string
+        file:
+          type: string
+          format: uri
+          nullable: true
+        submitted_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - homework
+      - id
+      - submitted_at
+    StudentRanges:
+      type: object
+      properties:
+        empty_groups:
+          type: integer
+          description: 0 ta talaba bo'lgan guruhlar soni
+        one_to_five_students:
+          type: integer
+          description: 1 dan 5 tagacha talabasi bo'lgan guruhlar
+        six_to_ten_students:
+          type: integer
+          description: 6 dan 10 tagacha talabasi bo'lgan guruhlar
+        eleven_to_fifteen_students:
+          type: integer
+          description: 11 dan 15 tagacha talabasi bo'lgan guruhlar
+        more_than_fifteen_students:
+          type: integer
+          description: 15 tadan ortiq talabasi bo'lgan guruhlar
+      required:
+      - eleven_to_fifteen_students
+      - empty_groups
+      - more_than_fifteen_students
+      - one_to_five_students
+      - six_to_ten_students
+    StudentSubmissionBrief:
+      type: object
+      properties:
+        id:
+          type: integer
+        score:
+          type: integer
+          nullable: true
+        teacher_comment:
+          type: string
+        submitted_at:
+          type: string
+          format: date-time
+          nullable: true
+        is_graded:
+          type: boolean
+      required:
+      - id
+      - is_graded
+      - score
+      - submitted_at
+      - teacher_comment
+    StudentsStatistics:
+      type: object
+      properties:
+        total_capacity:
+          type: integer
+          description: Barcha guruhlarning umumiy sig'imi
+        total_active_students:
+          type: integer
+          description: Hozirda faol tahsil olayotgan umumiy talabalar soni
+        total_available_seats:
+          type: integer
+          description: Jami mavjud bo'sh o'rinlar soni
+        occupancy_rate_percentage:
+          type: number
+          format: double
+          description: Guruhlar sig'imining to'lganlik darajasi foizda
+        average_students_per_group:
+          type: number
+          format: double
+          description: Bitta guruhga to'g'ri keladigan o'rtacha talabalar soni
+        full_groups_count:
+          type: integer
+          description: To'liq to'lgan guruhlar soni
+        available_groups_count:
+          type: integer
+          description: Bo'sh o'rni bor guruhlar soni
+        empty_groups_count:
+          type: integer
+          description: Talabasi bo'lmagan (bo'sh) guruhlar soni
+      required:
+      - available_groups_count
+      - average_students_per_group
+      - empty_groups_count
+      - full_groups_count
+      - occupancy_rate_percentage
+      - total_active_students
+      - total_available_seats
+      - total_capacity
+    TeacherDistribution:
+      type: object
+      properties:
+        teacher_id:
+          type: integer
+        teacher_name:
+          type: string
+        groups_count:
+          type: integer
+        active_students_count:
+          type: integer
+        total_capacity:
+          type: integer
+      required:
+      - active_students_count
+      - groups_count
+      - teacher_id
+      - teacher_name
+      - total_capacity
+    TeacherGradeAttempt:
+      type: object
+      description: Aynan shu guruh o'qituvchisi tomonidan talabaning imtihonini baholash
+        serializeri.
+      properties:
+        score:
+          type: integer
+          minimum: 0
+          description: Talabaga qo'yiladigan yakuniy ball.
+        teacher_comment:
+          type: string
+          description: O'qituvchining imtihon natijasi bo'yicha sharhi.
+      required:
+      - score
+    TeacherGradeSubmission:
+      type: object
+      description: |-
+        O'qituvchi tomonidan talabaning topshirgan vazifasini baholash
+        va izoh qoldirish uchun serializer.
+      properties:
+        score:
+          type: integer
+          minimum: 0
+          description: O'qituvchi qo'ygan ball (0 dan maksimal ballgacha).
+        teacher_comment:
+          type: string
+          description: O'qituvchining vazifa bo'yicha fikr-mulohazasi.
+      required:
+      - score
+    TeacherGroupDetail:
+      type: object
+      description: |-
+        O'qituvchi o'zining bitta guruhini ID bo'yicha ko'rganda (retrieve) batafsil ma'lumot beruvchi serializer:
+        - Guruh asosiy ma'lumotlari (nomi, holati, sanalari, sig'imi)
+        - Kurs haqida ma'lumotlar (nomi, tavsifi, davomiyligi, darslar soni)
+        - Dars jadvali (schedules)
+        - Rejalashtirilgan/yaratilgan darslar soni (lessons_count)
+        ESLATMA: Talabalar ro'yxati alohida /Educations/teacher/groups/{id}/students/ endpointi orqali olinadi.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        course:
+          type: integer
+          readOnly: true
+        course_name:
+          type: string
+          readOnly: true
+        course_description:
+          type: string
+          readOnly: true
+        course_duration:
+          type: string
+          readOnly: true
+        course_lesson_quantity:
+          type: integer
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+          readOnly: true
+        end_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          description: Faqat status completed, cancelled yoki paused qilinganda avtomatik
+            yoziladi.
+        capacity:
+          type: integer
+          readOnly: true
+          description: Qancha talaba ketishi
+        active_students_count:
+          type: integer
+          readOnly: true
+        available_seats:
+          type: integer
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusA5aEnum'
+          readOnly: true
+        status_display:
+          type: string
+          readOnly: true
+        schedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleBrief'
+          readOnly: true
+        lessons_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - active_students_count
+      - available_seats
+      - capacity
+      - course
+      - course_description
+      - course_duration
+      - course_lesson_quantity
+      - course_name
+      - created_at
+      - end_date
+      - id
+      - lessons_count
+      - name
+      - schedules
+      - start_date
+      - status
+      - status_display
+      - updated_at
+    TeacherGroupList:
+      type: object
+      description: |-
+        O'qituvchi o'ziga biriktirilgan barcha guruhlarni ko'rganda (list)
+        qaytadigan ixcham (kamaytirilgan) serializer.
+        Ortiqcha maydonlar (o'qituvchining o'z ismi, kurs ID, created_at, updated_at) olib tashlangan.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        course_name:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusA5aEnum'
+          readOnly: true
+        status_display:
+          type: string
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+          readOnly: true
+        capacity:
+          type: integer
+          readOnly: true
+          description: Qancha talaba ketishi
+        active_students_count:
+          type: integer
+          readOnly: true
+      required:
+      - active_students_count
+      - capacity
+      - course_name
+      - id
+      - name
+      - start_date
+      - status
+      - status_display
+    TenantCreateAdmin:
+      type: object
+      description: Mavjud tenant ichida yangi admin yoki xodim yaratish serializeri.
+      properties:
+        username:
+          type: string
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        phone:
+          type: string
+          maxLength: 20
+        email:
+          oneOf:
+          - type: string
+            format: email
+          - type: string
+            maxLength: 0
+        role:
+          allOf:
+          - $ref: '#/components/schemas/TenantCreateAdminRoleEnum'
+          default: ADMIN
+      required:
+      - password
+      - phone
+      - username
+    TenantCreateAdminRoleEnum:
+      enum:
+      - SUPER_ADMIN
+      - ADMIN
+      type: string
+      description: |-
+        * `SUPER_ADMIN` - Super Admin
+        * `ADMIN` - Admin
+    TenantMetricsResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+        active:
+          type: integer
+        inactive:
+          type: integer
+        on_trial:
+          type: integer
+        paid:
+          type: integer
+        new_this_month:
+          type: integer
+        new_last_month:
+          type: integer
+        growth_rate_percentage:
+          type: number
+          format: double
+        expiring_in_7_days:
+          type: integer
+        expiring_in_30_days:
+          type: integer
+        total_domains:
+          type: integer
+      required:
+      - active
+      - expiring_in_30_days
+      - expiring_in_7_days
+      - growth_rate_percentage
+      - inactive
+      - new_last_month
+      - new_this_month
+      - on_trial
+      - paid
+      - total
+      - total_domains
+    TenantSummaryItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        schema_name:
+          type: string
+        primary_domain:
+          type: string
+          nullable: true
+        domains:
+          type: array
+          items:
+            type: string
+        created_on:
+          type: string
+          format: date
+        paid_until:
+          type: string
+          format: date
+        on_trial:
+          type: boolean
+        is_active:
+          type: boolean
+        days_left:
+          type: integer
+        total_users:
+          type: integer
+        users_by_role:
+          type: object
+          additionalProperties: {}
+        users_joined_this_month:
+          type: integer
+        active_users_this_month:
+          type: integer
+      required:
+      - active_users_this_month
+      - created_on
+      - days_left
+      - domains
+      - id
+      - is_active
+      - name
+      - on_trial
+      - paid_until
+      - primary_domain
+      - schema_name
+      - total_users
+      - users_by_role
+      - users_joined_this_month
+    TenantsSummaryStatsResponse:
+      type: object
+      properties:
+        tenants_metrics:
+          $ref: '#/components/schemas/TenantMetricsResponse'
+        tenants_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/TenantSummaryItem'
+      required:
+      - tenants_list
+      - tenants_metrics
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    User:
+      type: object
+      description: Foydalanuvchilar ro'yxati va batafsil ma'lumotlarini ko'rish uchun
+        serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        role:
+          $ref: '#/components/schemas/Role45dEnum'
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_joined
+      - id
+      - phone
+      - username
+    UserCreate:
+      type: object
+      description: |-
+        Foydalanuvchi yaratish uchun serializer.
+        - SuperAdmin rolini hech qaysi user create qila olmaydi (faqat admin panel).
+        - Admin faqat Teacher va Student rollarini yarata oladi.
+        - SuperAdmin esa Admin, Teacher, Student yarata oladi (lekin SuperAdmin emas).
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        role:
+          allOf:
+          - $ref: '#/components/schemas/Role45dEnum'
+          default: STUDENT
+          description: |-
+            Foydalanuvchi roli (SUPER_ADMIN rolini yaratish mumkin emas)
+
+            * `SUPER_ADMIN` - Super Admin
+            * `ADMIN` - Admin
+            * `TEACHER` - Teacher
+            * `STUDENT` - Student
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - id
+      - password
+      - phone
+      - username
+    UserGrowthResponse:
+      type: object
+      properties:
+        monthly_trend:
+          type: array
+          items:
+            $ref: '#/components/schemas/MonthlyTrendItem'
+        daily_trend:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyTrendItem'
+      required:
+      - daily_trend
+      - monthly_trend
+    UserMetricsResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+        active:
+          type: integer
+        inactive:
+          type: integer
+        joined_this_month:
+          type: integer
+        joined_last_month:
+          type: integer
+        growth_rate_percentage:
+          type: number
+          format: double
+        joined_this_week:
+          type: integer
+        joined_today:
+          type: integer
+        active_logged_in_this_month:
+          type: integer
+        roles_breakdown:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/UserRoleBreakdown'
+      required:
+      - active
+      - active_logged_in_this_month
+      - growth_rate_percentage
+      - inactive
+      - joined_last_month
+      - joined_this_month
+      - joined_this_week
+      - joined_today
+      - roles_breakdown
+      - total
+    UserParentStatus:
+      type: object
+      description: |-
+        O'quvchining ota-onasi Telegram botga ulanganlik holatini qaytaruvchi serializer.
+        DIQQAT: chat_id xavfsizlik va maxfiylik nuqtai nazaridan HECH QACHON ko'rsatilmaydi!
+      properties:
+        status:
+          type: string
+          description: 'Ota-onaning ulanish holati: ''connected'', ''phone_only'',
+            ''not_connected'', ''not_student'''
+        is_connected:
+          type: boolean
+          description: Ota-ona Telegram botga ulanganmi (True/False)
+        message:
+          type: string
+          description: Holat haqida xabar
+        full_name:
+          type: string
+          nullable: true
+          description: Ota-onaning to'liq ismi sharifi
+        phone:
+          type: string
+          nullable: true
+          description: Ota-onaning telefon raqami
+      required:
+      - is_connected
+      - message
+      - status
+    UserRoleBreakdown:
+      type: object
+      properties:
+        count:
+          type: integer
+        percentage:
+          type: number
+          format: double
+      required:
+      - count
+      - percentage
+    UserRolesStatsResponse:
+      type: object
+      properties:
+        total_users:
+          type: integer
+        roles:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/RoleStatsItem'
+      required:
+      - roles
+      - total_users
+    UserUpdate:
+      type: object
+      description: Foydalanuvchini faqat PATCH orqali qisman tahrirlash uchun serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        phone:
+          type: string
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        role:
+          allOf:
+          - $ref: '#/components/schemas/Role45dEnum'
+          description: |-
+            Foydalanuvchi roli
+
+            * `SUPER_ADMIN` - Super Admin
+            * `ADMIN` - Admin
+            * `TEACHER` - Teacher
+            * `STUDENT` - Student
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+      required:
+      - id
+      - phone
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'JWT access tokenni kiriting. Masalan: Bearer <token>'
